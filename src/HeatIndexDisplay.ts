@@ -1,6 +1,11 @@
 import WeatherData from './WeatherData';
+import { WeatherDataObserver } from './WeatherDataObserver';
 
-export default class HeatIndexDisplay {
+export default class HeatIndexDisplay implements WeatherDataObserver {
+
+  update(weatherData: WeatherData): void {
+    HeatIndexDisplay.displayHeatIndex(weatherData);
+  }
 
   static displayHeatIndex(currentData: WeatherData): void {
     const {humidity, temperature} = currentData;

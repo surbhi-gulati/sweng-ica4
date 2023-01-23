@@ -2,8 +2,11 @@ import StatisticsDisplay from './StatisticsDisplay';
 import ForecastDisplay from './ForecastDisplay';
 import CurrentConditionsDisplay from './CurrentConditionsDisplay';
 import HeatIndexDisplay from './HeatIndexDisplay';
+import { WeatherDataObserver } from './WeatherDataObserver';
 
 export default class WeatherData {
+  private _observers: WeatherDataObserver[] = [];
+
   private _temperature = 0;
 
   get temperature(): number {
@@ -34,9 +37,14 @@ export default class WeatherData {
   }
 
   private measurementsChanged() {
-    this._statisticsDisplay.displayStatistics(this);
-    this._forecastDisplay.displayForecast(this);
-    CurrentConditionsDisplay.displayCurrentConditions(this);
-    HeatIndexDisplay.displayHeatIndex(this);
+    this._observers.forEach(observer => observer.update(this));
+  }
+
+  public registerObserver(observer: WeatherDataObserver) {
+    this._observers.push(observer);
+  }
+
+  public deregisterObserver(observer: WeatherDataObserver) {
+    this._observers.filter(obs => obs !== observer);
   }
 }

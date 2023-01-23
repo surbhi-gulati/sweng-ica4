@@ -1,6 +1,7 @@
 import WeatherData from './WeatherData';
+import { WeatherDataObserver } from './WeatherDataObserver';
 
-export default class StatisticsDisplay {
+export default class StatisticsDisplay implements WeatherDataObserver {
   private _maxTemp = 0;
 
   private _minTemp = 0;
@@ -8,6 +9,10 @@ export default class StatisticsDisplay {
   private _tempSum = 0;
 
   private _numReadings = 0;
+
+  update(weatherData: WeatherData): void {
+    this.displayStatistics(weatherData);
+  }
 
   displayStatistics(currentData: WeatherData): void {
     this._tempSum += currentData.temperature;
